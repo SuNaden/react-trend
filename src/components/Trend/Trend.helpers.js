@@ -1,6 +1,9 @@
-import { normalize } from '../../helpers/math.helpers';
+import { normalize } from "../../helpers/math.helpers";
 
-export const normalizeDataset = (data, { minX, maxX, minY, maxY }) => {
+export const normalizeDataset = (
+  data,
+  { minX, maxX, minY, maxY, userMinY, userMaxY }
+) => {
   // For the X axis, we want to normalize it based on its index in the array.
   // For the Y axis, we want to normalize it based on the element's value.
   //
@@ -8,7 +11,10 @@ export const normalizeDataset = (data, { minX, maxX, minY, maxY }) => {
   // For the Y axis, we first need to find the min and max of our array,
   // and then normalize those values between 0 and 1.
   const boundariesX = { min: 0, max: data.length - 1 };
-  const boundariesY = { min: Math.min(...data), max: Math.max(...data) };
+  const boundariesY = {
+    min: userMinY ? userMinY : Math.min(...data),
+    max: userMaxY ? userMaxY : Math.max(...data)
+  };
 
   const normalizedData = data.map((point, index) => ({
     x: normalize({
@@ -16,15 +22,15 @@ export const normalizeDataset = (data, { minX, maxX, minY, maxY }) => {
       min: boundariesX.min,
       max: boundariesX.max,
       scaleMin: minX,
-      scaleMax: maxX,
+      scaleMax: maxX
     }),
     y: normalize({
       value: point,
       min: boundariesY.min,
       max: boundariesY.max,
       scaleMin: minY,
-      scaleMax: maxY,
-    }),
+      scaleMax: maxY
+    })
   }));
 
   // According to the SVG spec, paths with a height/width of `0` can't have

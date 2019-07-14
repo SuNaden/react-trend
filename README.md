@@ -3,7 +3,6 @@
   <br>
   <h1>React Trend</h1>
   <br>
-  <a href="https://www.npmjs.org/package/react-trend"><img src="https://img.shields.io/npm/v/react-trend.png?style=flat-square" alt="npm"></a> <a href="https://travis-ci.org/unsplash/react-trend"><img src="https://img.shields.io/travis/unsplash/react-trend/master.png?style=flat-square" alt="travis"></a> <a href="https://codecov.io/github/unsplash/react-trend"><img src="https://img.shields.io/codecov/c/github/unsplash/react-trend.svg" alt="travis"></a>
 </div>
 
 <br>
@@ -12,25 +11,7 @@
 
 ### Note: This project is no longer actively maintained.
 
-Unfortunately, none of this project's authors have the time/enthusiasm to maintain this project right now. We recommend forking this project, or [reading its source](https://github.com/unsplash/react-trend/blob/master/src/components/Trend/Trend.js) to learn how it's built).
-
----
-
-Graphing tools are often complex, abstract, and heavy. They require domain-specific knowledge, and a significant time investment.
-
-While building rich data visualizations for an analytics app, this is a necessary cost. But what if you just need a spark line that shows a trend?
-
-For example, here's how GitHub shows activity on a repo:
-
-<img src="https://raw.githubusercontent.com/unsplash/react-trend/master/misc/documentation-assets/gh-trend.png" width="300" />
-
-Here's how Twitter displays your recent analytics:
-
-<img src="https://raw.githubusercontent.com/unsplash/react-trend/master/misc/documentation-assets/tw-trend.png" width="300" />
-
-These are very simple and elegant visualizations, and they should not require a bloated graphing library to produce.
-
-React Trend is a concrete component that does 1 thing, and does it well: generate these trending graphs.
+This is a fork of https://github.com/unsplash/react-trend with some custom functionality added.
 
 ## Demo
 
@@ -63,7 +44,7 @@ UMD build exposes the component as `Trend`.
 ### Quickstart
 
 ```js
-import Trend from 'react-trend';
+import Trend from "react-trend";
 
 const MyComponent = () => <Trend data={[0, 10, 5, 22, 3.6, 11]} />;
 
@@ -169,7 +150,7 @@ Colour can be specified as any SVG-supported format (named, rgb, hex, etc).
 ###### Example
 
 ```js
-<Trend gradient={['#0FF', '#F0F', '#FF0']} />
+<Trend gradient={["#0FF", "#F0F", "#FF0"]} />
 ```
 
 #### `height`
@@ -252,4 +233,20 @@ Note that in _most_ cases it is sufficient to leave this blank, and just control
 
 ```js
 <Trend width={200} height={200} />
+```
+
+#### `minValue` and `maxValue`
+
+| Type           | Required | Default     |
+| -------------- | -------- | ----------- |
+| Number, Number | ✕        | `undefined` |
+
+Set an explicit minimum and maximum value for the generated trend. This means that normalization will **not** happen, your values will be plotted on a graph with a minimum of `minValue` and maximum of `maxValue`.
+
+The provided data must fall within the range of the `minValue` and `maxValue` (inclusive of the values).
+
+###### Example
+
+```js
+<Trend minValue={0} maxValue={100} />
 ```

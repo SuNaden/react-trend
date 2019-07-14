@@ -1,23 +1,23 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
-import { omit } from '../../utils';
+import { omit } from "../../utils";
 import {
   buildSmoothPath,
   buildLinearPath,
-  injectStyleTag,
-} from '../../helpers/DOM.helpers';
-import { normalize } from '../../helpers/math.helpers';
-import { generateId } from '../../helpers/misc.helpers';
-import { normalizeDataset, generateAutoDrawCss } from './Trend.helpers';
+  injectStyleTag
+} from "../../helpers/DOM.helpers";
+import { normalize } from "../../helpers/math.helpers";
+import { generateId } from "../../helpers/misc.helpers";
+import { normalizeDataset, generateAutoDrawCss } from "./Trend.helpers";
 
 const propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.oneOfType([
       PropTypes.number,
       PropTypes.shape({
-        value: PropTypes.number,
-      }),
+        value: PropTypes.number
+      })
     ]).isRequired
   ).isRequired,
   smooth: PropTypes.bool,
@@ -28,17 +28,21 @@ const propTypes = {
   height: PropTypes.number,
   padding: PropTypes.number,
   radius: PropTypes.number,
-  gradient: PropTypes.arrayOf(PropTypes.string),
+  minValue: PropTypes.number,
+  maxValue: PropTypes.number,
+  gradient: PropTypes.arrayOf(PropTypes.string)
 };
 
 const defaultProps = {
   radius: 10,
-  stroke: 'black',
+  stroke: "black",
   padding: 8,
   strokeWidth: 1,
   autoDraw: false,
   autoDrawDuration: 2000,
-  autoDrawEasing: 'ease',
+  autoDrawEasing: "ease",
+  minValue: null,
+  maxValue: null
 };
 
 class Trend extends Component {
@@ -62,7 +66,7 @@ class Trend extends Component {
         id: this.trendId,
         lineLength: this.lineLength,
         duration: autoDrawDuration,
-        easing: autoDrawEasing,
+        easing: autoDrawEasing
       });
 
       injectStyleTag(css);
@@ -78,27 +82,24 @@ class Trend extends Component {
 
     return (
       <defs>
-        <linearGradient
-          id={this.gradientId}
-          x1="0%"
-          y1="0%"
-          x2="0%"
-          y2="100%"
-        >
-          {gradient.slice().reverse().map((c, index) => (
-            <stop
-              key={index}
-              offset={normalize({
-                value: index,
-                min: 0,
-                // If we only supply a single colour, it will try to normalize
-                // between 0 and 0, which will create NaN. By making the `max`
-                // at least 1, we ensure single-color "gradients" work.
-                max: gradient.length - 1 || 1,
-              })}
-              stopColor={c}
-            />
-          ))}
+        <linearGradient id={this.gradientId} x1="0%" y1="0%" x2="0%" y2="100%">
+          {gradient
+            .slice()
+            .reverse()
+            .map((c, index) => (
+              <stop
+                key={index}
+                offset={normalize({
+                  value: index,
+                  min: 0,
+                  // If we only supply a single colour, it will try to normalize
+                  // between 0 and 0, which will create NaN. By making the `max`
+                  // at least 1, we ensure single-color "gradients" work.
+                  max: gradient.length - 1 || 1
+                })}
+                stopColor={c}
+              />
+            ))}
         </linearGradient>
       </defs>
     );
@@ -112,7 +113,7 @@ class Trend extends Component {
       height,
       padding,
       radius,
-      gradient,
+      gradient
     } = this.props;
 
     // We need at least 2 points to draw a graph.
@@ -127,9 +128,9 @@ class Trend extends Component {
     //
     // For now, we're just going to convert the second form to the first.
     // Later on, if/when we support tooltips, we may adjust.
-    const plainValues = data.map(point => (
-      typeof point === 'number' ? point : point.value
-    ));
+    const plainValues = data.map(point =>
+      typeof point === "number" ? point : point.value
+    );
 
     // Our viewbox needs to be in absolute units, so we'll default to 300x75
     // Our SVG can be a %, though; this is what makes it scalable.
@@ -137,21 +138,23 @@ class Trend extends Component {
     // container, preserving a 1/4 aspect ratio.
     const viewBoxWidth = width || 300;
     const viewBoxHeight = height || 75;
-    const svgWidth = width || '100%';
-    const svgHeight = height || '25%';
+    const svgWidth = width || "100%";
+    const svgHeight = height || "25%";
 
-    const normalizedValues = normalizeDataset(plainValues, {
+    const values = normalizeDataset(plainValues, {
       minX: padding,
       maxX: viewBoxWidth - padding,
       // NOTE: Because SVGs are indexed from the top left, but most data is
       // indexed from the bottom left, we're inverting the Y min/max.
       minY: viewBoxHeight - padding,
       maxY: padding,
+      userMinY: this.props.minValue,
+      userMaxY: this.props.maxValue
     });
 
     const path = smooth
-      ? buildSmoothPath(normalizedValues, { radius })
-      : buildLinearPath(normalizedValues);
+      ? buildSmoothPath(values, { radius })
+      : buildLinearPath(values);
 
     return (
       <svg
@@ -163,7 +166,9 @@ class Trend extends Component {
         {gradient && this.renderGradientDefinition()}
 
         <path
-          ref={(elem) => { this.path = elem; }}
+          ref={elem => {
+            this.path = elem;
+          }}
           id={`react-trend-${this.trendId}`}
           d={path}
           fill="none"
