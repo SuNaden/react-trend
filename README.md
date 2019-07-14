@@ -1,15 +1,6 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/unsplash/react-trend/master/misc/documentation-assets/react-trend-example.png" width="500" alt="React Trend">
-  <br>
   <h1>React Trend Extended</h1>
-  <br>
 </div>
-
-<br>
-<br>
-<br>
-
-### Note: This project is no longer actively maintained.
 
 This is a fork of https://github.com/unsplash/react-trend with some custom functionality added.
 
@@ -28,23 +19,13 @@ Check out the [React Trend playground](https://unsplash.github.io/react-trend/).
 ### Installation
 
 ```bash
-$ yarn add react-trend
-
-# Alternatively:
-$ npm i -S react-trend
+$ npm i -S react-trend-extended
 ```
-
-UMD builds are also available via CDN:
-
-- [react-trend.js](https://unpkg.com/react-trend/umd/react-trend.js)
-- [react-trend.min.js](https://unpkg.com/react-trend/umd/react-trend.min.js)
-
-UMD build exposes the component as `Trend`.
 
 ### Quickstart
 
 ```js
-import Trend from "react-trend";
+import Trend from "react-trend-extended";
 
 const MyComponent = () => <Trend data={[0, 10, 5, 22, 3.6, 11]} />;
 
