@@ -1,7 +1,7 @@
 <div align="center">
   <img src="https://raw.githubusercontent.com/unsplash/react-trend/master/misc/documentation-assets/react-trend-example.png" width="500" alt="React Trend">
   <br>
-  <h1>React Trend</h1>
+  <h1>React Trend Extended</h1>
   <br>
 </div>
 

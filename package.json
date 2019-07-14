@@ -1,7 +1,7 @@
 {
-  "name": "react-trend",
-  "version": "1.2.5",
-  "description": "react-trend React component",
+  "name": "react-trend-extended",
+  "version": "1.0.0",
+  "description": "react-trend-extended React component",
   "main": "lib/index.js",
   "module": "es/index.js",
   "files": [
@@ -43,16 +43,10 @@
     "react-slider": "0.7.0",
     "react-syntax-highlighter": "4.0.1"
   },
-  "contributors": [
-    {
-      "name": "Joshua Comeau",
-      "email": "josh@unsplash.com"
-    }
-  ],
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/unsplash/react-trend.git"
+    "url": "https://github.com/SuNaden/react-trend.git"
   },
   "keywords": [
     "react-component",
